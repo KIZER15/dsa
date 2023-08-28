@@ -7,6 +7,8 @@ void create_list();
 void insert_pos();
 void insert_before_val();
 void insert_after_val();
+void insert_delete();
+
 
 typedef struct link
 {
