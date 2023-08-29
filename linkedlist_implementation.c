@@ -8,11 +8,11 @@ void insert_pos();
 void insert_before_val();
 void insert_after_val();
 void delete_beginning();
-// void delete_end();
+void delete_end();
 void delete_before_val();
 void delete_after_val();
 void delete_at_pos();
-// void reverse();
+void reverse();
 
 typedef struct link
 {
@@ -24,7 +24,7 @@ list *start = NULL;
 void main()
 {
 	int ch;
-	printf("Enter 1 to create list\nEnter 2 to insert at the begining\nEnter 3 to insert at the end\nEnter 4 to display\nEnter 5 to insert at a given position\nEnter 6 to enter before a given value\nEnter 7 to insert after a given value\nEnter 8 to delete from the beginning\nEnter 9 to delete from the end\nEnter 10 to delete after a value\nEnter 11 to delete before value\nEnter 12 to delete at position\nEnter 13 to reverse the list\nEnter 14 to exit");
+	printf("Enter 1 to create list\nEnter 2 to insert at the begining\nEnter 3 to insert at the end\nEnter 4 to display\nEnter 5 to insert at a given position\nEnter 6 to enter before a given value\nEnter 7 to insert after a given value\nEnter 8 to delete from the beginning\nEnter 9 to delete from the end\nEnter 10 to delete after a value\nEnter 11 to delete before value\nEnter 12 to delete at position\nEnter 13 to reverse the list\nEnter 14 to exit\n");
 	while (1)
 	{
 		printf("Enter the choice\n");
@@ -55,20 +55,21 @@ void main()
 		case 8:
 			delete_beginning();
 			break;
-		// case 9:
-		// 	delete_end();
+		case 9:
+			delete_end();
+			break;
 		case 10:
 			delete_after_val();
 			break;
 		case 11:
 			delete_before_val();
 			break;
-		// case 12:
-		// 	delete_at_pos();
-		// 	break;
-		// case 13:
-		// 	reverse();
-		// 	break;
+		case 12:
+			delete_at_pos();
+			break;
+		case 13:
+			reverse();
+			break;
 		case 14:
 			exit(0);
 		default:
@@ -253,6 +254,20 @@ void delete_beginning()
 		free(temp);
 	}
 }
+
+void delete_end()
+{
+	list *temp, *t;
+	temp = start;
+	while (temp->next != NULL)
+	{
+		t = temp;
+		temp = temp->next;
+	}
+	t->next = NULL;
+	free(temp);
+}
+
 void delete_after_val()
 {
 	int val;
@@ -280,23 +295,72 @@ void delete_after_val()
 void delete_before_val()
 {
 	int val;
-	list *temp,*t1,*t2;
-	temp=t1=t2=start;
+	list *temp, *t1, *t2;
+	temp = t1 = t2 = start;
 	printf("Enter the value after which the node to be deleted\n");
 	scanf("%d", &val);
-	
-	if(start==NULL)
-	printf("The list is empty\n");
+
+	if (start == NULL)
+		printf("The list is empty\n");
 	else
 	{
-		while(temp->data !=val)
+		while (temp->data != val)
 		{
-			t1=temp;
-	        t2=t1;
-			temp=temp->next;
+			t1 = temp;
+			t2 = t1;
+			temp = temp->next;
 		}
-		t2->next=temp;
+		t2->next = temp;
 		free(t1);
 	}
+}
+
+void delete_at_pos()
+{
+	list *temp, *t;
+	int pos, count = 0;
+	temp = start;
+	printf("Enter the position to delete\n");
+	scanf("%d", &pos);
+	while (temp != NULL)
+	{
+		count = count + 1;
+		temp = temp->next;
+	}
+	if (pos == 1 & count >= 0)
+		delete_beginning();
+	else if (pos == count & count > 0)
+		delete_end();
+	else if (pos > 1 && pos < count)
+	{
+		temp = start;
+		count = 0;
+		while (temp != NULL && count != (pos - 1))
+		{
+			count = count + 1;
+			t = temp;
+			temp = temp->next;
+		}
+		t->next = temp->next;
+		free(temp);
+	}
+	else
+		printf("position not found");
+}
+
+void reverse()
+{
+	list *curr,*p,*n;
+	n=NULL;
+	p=NULL;
+	curr=start;
+	while(curr!=NULL)
+	{
+		n=curr->next;
+		curr->next=p;
+		p=curr;
+		curr=n;
+	}
+	start=p;
 
 }
